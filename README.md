@@ -66,3 +66,11 @@ scope结合策略授权来限制访问权限
 访问令牌允许访问API资源，客户端请求访问令牌并将其转发到API， 访问令牌包含有关客户端和用户的信息（如果存在）， API使用该信息来授权访问其数据。
 
 ![avatar](/Imgs/GetToken.png)
+
+## Quick UI
+
+https://github.com/IdentityServer/IdentityServer4.Quickstart.UI
+
+执行命令：
+
+iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/IdentityServer/IdentityServer4.Quickstart.UI/main/getmain.ps1'))
