@@ -12,6 +12,8 @@ Install-Package IdentityServer4
 Install-Package IdentityServer4.AspNetIdentity
 
 Install-Package IdentityServer4.EntityFramework
+    
+Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
 
 Install-Package Microsoft.EntityFrameworkCore
 

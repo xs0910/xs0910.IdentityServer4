@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
+using xs0910.IdentityServer4.Models;
 
 namespace xs0910.IdentityServer4
 {
@@ -28,6 +28,7 @@ namespace xs0910.IdentityServer4
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddMvc();
 
             #region 数据库配置
@@ -53,8 +54,24 @@ namespace xs0910.IdentityServer4
             if (string.IsNullOrEmpty(connectionStr))
             {
                 throw new Exception("数据库配置异常");
-            } 
+            }
+
+            // 数据库配置系统应用用户数据上下文
+            if (isMySql)
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(connectionStr, new MySqlServerVersion(new Version(8, 0, 23))));
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionStr));
+            }
+
             #endregion
+
+            // 在IdentityServer4 服务前，需要启动 Identity服务，添加指定的用户和角色类型的默认标识系统配置
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // 添加IdentityServer4 服务
             var builder = services.AddIdentityServer(options =>
@@ -64,11 +81,58 @@ namespace xs0910.IdentityServer4
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-            .AddTestUsers(InMemoryConfig.Users().ToList())
-            .AddInMemoryIdentityResources(InMemoryConfig.GetIdentityResources())
-            .AddInMemoryApiScopes(InMemoryConfig.GetApiScopes())
-            .AddInMemoryApiResources(InMemoryConfig.GetApiResources())
-            .AddInMemoryClients(InMemoryConfig.GetClients())
+            // 内存模式
+            //.AddTestUsers(InMemoryConfig.Users().ToList())
+            //.AddInMemoryIdentityResources(InMemoryConfig.GetIdentityResources())
+            //.AddInMemoryApiScopes(InMemoryConfig.GetApiScopes())
+            //.AddInMemoryApiResources(InMemoryConfig.GetApiResources())
+            //.AddInMemoryClients(InMemoryConfig.GetClients())
+
+            // 数据库模式
+            .AddAspNetIdentity<ApplicationUser>()
+
+            // 添加配置数据（客户端和资源）
+            .AddConfigurationStore(options =>
+            {
+                if (isMySql)
+                {
+                    options.ConfigureDbContext = b => b.UseMySql(
+                        connectionStr,
+                        new MySqlServerVersion(new Version(8, 0, 23)),
+                        sql => sql.MigrationsAssembly(migrationsAssembly)
+                    );
+                }
+                else
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(
+                       connectionStr,
+                       sql => sql.MigrationsAssembly(migrationsAssembly)
+                   );
+                }
+            })
+
+            // 添加操作数据
+            .AddOperationalStore(options =>
+            {
+                if (isMySql)
+                {
+                    options.ConfigureDbContext = b => b.UseMySql(
+                        connectionStr,
+                        new MySqlServerVersion(new Version(8, 0, 23)),
+                        sql => sql.MigrationsAssembly(migrationsAssembly)
+                    );
+                }
+                else
+                {
+                    options.ConfigureDbContext = b => b.UseSqlServer(
+                       connectionStr,
+                       sql => sql.MigrationsAssembly(migrationsAssembly)
+                   );
+                }
+
+                // this enables automic cleaup token. this is optional
+                options.EnableTokenCleanup = true;
+            })
             ;
 
             builder.AddDeveloperSigningCredential();
