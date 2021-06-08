@@ -1,0 +1,11 @@
+﻿add-migration InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/MigrationsMysql/IdentityServer/PersistedGrantDb
+
+add-migration InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/MigrationsMysql/IdentityServer/ConfigurationDb
+
+add-migration AppDbMigration -c ApplicationDbContext -o Data/MigrationsMysql/IdentityServer/ApplicationDb
+
+update-database -Context PersistedGrantDbContext
+
+update-database -Context ConfigurationDbContext
+
+update-database -Context ApplicationDbContext
