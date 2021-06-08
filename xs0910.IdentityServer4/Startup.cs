@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,32 @@ namespace xs0910.IdentityServer4
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            #region 数据库配置
+            var isMySql = Configuration.GetConnectionString("IsMySql").ObjToBool();
+            string connectionStrFile = Configuration.GetConnectionString("Connection_File");
+            string connectionStr = string.Empty;
+            if (File.Exists(connectionStrFile))
+            {
+                connectionStr = File.ReadAllText(connectionStrFile).Trim();
+            }
+            else
+            {
+                if (isMySql)
+                {
+                    connectionStr = Configuration.GetConnectionString("Connection_MySql");
+                }
+                else
+                {
+                    connectionStr = Configuration.GetConnectionString("Connection_MSSql");
+                }
+            }
+
+            if (string.IsNullOrEmpty(connectionStr))
+            {
+                throw new Exception("数据库配置异常");
+            } 
+            #endregion
 
             // 添加IdentityServer4 服务
             var builder = services.AddIdentityServer(options =>
@@ -57,7 +84,7 @@ namespace xs0910.IdentityServer4
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseRouting();
 
             // 添加启动 IdentityServer 中间件
