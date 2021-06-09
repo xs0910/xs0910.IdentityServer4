@@ -1,5 +1,7 @@
+using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +31,9 @@ namespace xs0910.IdentityServer4
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddMvc();
+
+            services.AddSameSiteCookiePolicy();         // 自定义AddSameSiteCookiePolicy，不然 Context.User?.GetDisplayName() 取不到值
+            services.AddMvc().AddRazorRuntimeCompilation();
 
             #region 数据库配置
             var isMySql = Configuration.GetConnectionString("IsMySql").ObjToBool();
@@ -75,6 +79,12 @@ namespace xs0910.IdentityServer4
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            // 修改 Identity 应用配置
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = new PathString("/oauth2/authorize");
+            });
+
             // 添加IdentityServer4 服务
             var builder = services.AddIdentityServer(options =>
             {
@@ -82,6 +92,12 @@ namespace xs0910.IdentityServer4
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
+
+                // 自定义用户交互选项
+                options.UserInteraction = new UserInteractionOptions()
+                {
+                    LoginUrl = "/oauth2/authorize",      //配置登录地址，因为我们已经改成/oauth2/authorize
+                };
             })
             // 内存模式
             //.AddTestUsers(InMemoryConfig.Users().ToList())
@@ -146,6 +162,8 @@ namespace xs0910.IdentityServer4
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCookiePolicy();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

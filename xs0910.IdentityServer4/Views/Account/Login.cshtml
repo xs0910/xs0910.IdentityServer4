@@ -1,6 +1,6 @@
 @model LoginViewModel
 
-<div class="login-page">
+<div class="container">
     <div class="lead">
         <h1>Login</h1>
         <p>Choose how to login</p>
@@ -38,11 +38,16 @@
                                         <label class="form-check-label" asp-for="RememberLogin">
                                             Remember My Login
                                         </label>
+                                        <a href="/account/forgot-password" class="btn btn-sm float-right" title="忘记密码?">忘记密码?</a>
                                     </div>
                                 </div>
                             }
-                            <button class="btn btn-primary" name="button" value="login">Login</button>
-                            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                            <div class="form-group  text-center">
+                                <button class="btn btn-primary btn-lg btn-block" name="button" value="login">Login</button>
+                            </div>
+                            <div class="text-center">
+                                <a href="/account/register">立即注册</a>
+                            </div>
                         </form>
                     </div>
                 </div>
