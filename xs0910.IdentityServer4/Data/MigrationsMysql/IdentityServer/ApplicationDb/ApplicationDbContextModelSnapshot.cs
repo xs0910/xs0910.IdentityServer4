@@ -151,6 +151,9 @@ namespace xs0910.IdentityServer4.Data.MigrationsMysql.IdentityServer.Application
                     b.Property<int>("OrderSort")
                         .HasColumnType("int");
 
+                    b.Property<bool>("System")
+                        .HasColumnType("tinyint(1)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")

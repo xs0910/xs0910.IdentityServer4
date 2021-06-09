@@ -9,7 +9,7 @@ using xs0910.IdentityServer4;
 namespace xs0910.IdentityServer4.Data.MigrationsMysql.IdentityServer.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210608143402_AppDbMigration")]
+    [Migration("20210609044616_AppDbMigration")]
     partial class AppDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,6 +152,9 @@ namespace xs0910.IdentityServer4.Data.MigrationsMysql.IdentityServer.Application
 
                     b.Property<int>("OrderSort")
                         .HasColumnType("int");
+
+                    b.Property<bool>("System")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 

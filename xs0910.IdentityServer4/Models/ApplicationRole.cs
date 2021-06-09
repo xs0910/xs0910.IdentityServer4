@@ -22,6 +22,11 @@ namespace xs0910.IdentityServer4.Models
         public int OrderSort { get; set; }
 
         /// <summary>
+        /// 是否系统内置
+        /// </summary>
+        public bool System { get; set; }
+
+        /// <summary>
         /// 是否激活
         /// </summary>
         public bool Enabled { get; set; }

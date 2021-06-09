@@ -1,0 +1,36 @@
+[
+  {
+    "ID": "1",
+    "UserName": "admin",
+    "NickName": "ad",
+    "RealName": "管理者",
+    "Email": "admin@qq.com",
+    "PhoneNumber": "15088886661",
+    "LoginPWD": "AQAAAAEAACcQAAAAENTQVNqY8LmDV7DLrwzZv5bjZNAg+OTTSXoxv5XUcF9bX7tL/bKhZhYPyXUCSA+PHg==",
+    "Status": 0,
+    "Remark": null,
+    "CreateTime": "\/Date(1622642077000+0800)\/",
+    "UpdateTime": "\/Date(1622642077000+0800)\/",
+    "Sex": 1,
+    "Birth": "\/Date(1622642077000+0800)\/",
+    "Address": "广东省深圳市南山区",
+    "IsDeleted": 0
+  },
+  {
+    "ID": "2",
+    "UserName": "xs0910",
+    "NickName": "xs",
+    "RealName": "xs0910",
+    "Email": "xs0910@qq.com",
+    "PhoneNumber": "15088886662",
+    "LoginPWD": "AQAAAAEAACcQAAAAENTQVNqY8LmDV7DLrwzZv5bjZNAg+OTTSXoxv5XUcF9bX7tL/bKhZhYPyXUCSA+PHg==",
+    "Status": 0,
+    "Remark": null,
+    "CreateTime": "\/Date(1622642077000+0800)\/",
+    "UpdateTime": "\/Date(1622642077000+0800)\/",
+    "Sex": 1,
+    "Birth": "\/Date(1622642077000+0800)\/",
+    "Address": "广东省深圳市南山区",
+    "IsDeleted": 0
+  }
+]

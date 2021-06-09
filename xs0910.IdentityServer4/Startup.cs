@@ -68,6 +68,8 @@ namespace xs0910.IdentityServer4
 
             #endregion
 
+            services.AddAutoMapper();           // 加入AutoMapper
+
             // 在IdentityServer4 服务前，需要启动 Identity服务，添加指定的用户和角色类型的默认标识系统配置
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

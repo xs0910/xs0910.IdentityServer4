@@ -1,0 +1,47 @@
+[
+  {
+    "ID": "1",
+    "Name": "SuperAdmin",
+    "Description": "超级管理员，系统最高权限",
+    "OrderSort": 1,
+	"System": 1,
+    "Enabled": 1,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1622642077000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1622642077000+0800)\/",
+    "IsDeleted": 0
+  },
+  {
+    "Id": "2",
+    "Name": "SystemAdmin",
+    "Description": "系统管理，权限仅次于超级管理员",
+    "OrderSort": 2,
+	"System": 1,
+    "Enabled": 1,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1622642077000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1622642077000+0800)\/",
+    "IsDeleted": 0
+  },
+  {
+    "Id": 3,
+    "Name": "Normal",
+    "Description": "普通角色",
+    "OrderSort": 3,
+	"System": 1,
+    "Enabled": 1,
+    "CreateId": null,
+    "CreateBy": null,
+    "CreateTime": "\/Date(1622642077000+0800)\/",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "\/Date(1622642077000+0800)\/",
+    "IsDeleted": 0
+  }
+]

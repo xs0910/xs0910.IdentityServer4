@@ -26,6 +26,8 @@ Install-Package Pomelo.EntityFrameworkCore.MySql
 Install-Package Newtonsoft.Json
 
 Install-Package Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation -Version 3.1.15
+    
+Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
 ```
 
 

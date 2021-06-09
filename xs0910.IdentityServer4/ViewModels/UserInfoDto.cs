@@ -33,6 +33,16 @@ namespace xs0910.IdentityServer4.ViewModels
         public string RealName { get; set; }
 
         /// <summary>
+        /// 邮箱
+        /// </summary>
+        public string  Email { get; set; }
+
+        /// <summary>
+        /// 手机号码
+        /// </summary>
+        public string PhoneNumber { get; set; }
+
+        /// <summary>
         /// 登录密码
         /// </summary>
         public string LoginPwd { get; set; }

@@ -20,6 +20,7 @@ namespace xs0910.IdentityServer4.Data.MigrationsMysql.IdentityServer.Application
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OrderSort = table.Column<int>(type: "int", nullable: false),
+                    System = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Enabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     CreateId = table.Column<int>(type: "int", nullable: true),
                     CreateBy = table.Column<string>(type: "longtext", nullable: true)
