@@ -1,0 +1,85 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register User";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <ul class="breadcrumb col-md-12">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">注册用户</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <partial name="_ValidationSummary" />
+            <form asp-controller="UserInfo" asp-action="Register" asp-route-returnUrl="/UserInfo/Index" method="post">
+                <h4>Create a new User</h4>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NickName"></label>
+                    <input asp-for="NickName" class="form-control" />
+                    <span asp-validation-for="NickName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RealName"></label>
+                    <input asp-for="RealName" class="form-control" />
+                    <span asp-validation-for="RealName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Sex"></label>
+                    <br />
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Sex0" name="Sex" class="custom-control-input" asp-for="Sex" value="0" checked="checked">
+                        <label class="custom-control-label" for="Sex0">保密</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Sex1" name="Sex" class="custom-control-input" asp-for="Sex" value="1">
+                        <label class="custom-control-label" for="Sex1">男</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="Sex2" name="Sex" class="custom-control-input" asp-for="Sex" value="2">
+                        <label class="custom-control-label" for="Sex2">女</label>
+                    </div>
+                    <span asp-validation-for="Sex" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Address"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>

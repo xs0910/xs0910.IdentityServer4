@@ -46,7 +46,6 @@ namespace xs0910.IdentityServer4.Models
         /// </summary>
         public DateTime? ModifyTime { get; set; } = DateTime.Now;
 
-
         /// <summary>
         /// 是否删除
         /// </summary>

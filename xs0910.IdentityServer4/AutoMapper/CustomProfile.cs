@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IdentityServerHost.Quickstart.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,12 @@ namespace xs0910.IdentityServer4.AutoMapper
         public CustomProfile()
         {
             CreateMap<UserInfoDto, ApplicationUser>();
-            CreateMap<RoleInfoDto, ApplicationRole>();            
+            CreateMap<RoleInfoDto, ApplicationRole>();
+
+            CreateMap<RegisterViewModel, ApplicationUser>();
+
+            CreateMap<ApplicationUser, EditViewModel>()
+                .ForMember(dest => dest.Claims, opt => opt.Ignore());
         }
     }
 }

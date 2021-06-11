@@ -1,0 +1,91 @@
+﻿@model EditViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <ul class="breadcrumb col-md-12">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/userinfo/index">用户列表</a></li>
+            <li class="breadcrumb-item active">编辑用户</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <partial name="_ValidationSummary" />
+            @{
+                foreach (var item in Model.Claims)
+                {
+                    <p>@item</p>
+                }
+            }
+
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" disabled="disabled" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="NickName"></label>
+                <input asp-for="NickName" class="form-control" />
+                <span asp-validation-for="NickName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RealName"></label>
+                <input asp-for="RealName" class="form-control" />
+                <span asp-validation-for="RealName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Sex"></label>
+                <br />
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Sex0" name="Sex" class="custom-control-input" asp-for="Sex" value="0">
+                    <label class="custom-control-label" for="Sex1">保密</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Sex1" name="Sex" class="custom-control-input" asp-for="Sex" value="1">
+                    <label class="custom-control-label" for="Sex1">男</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="Sex2" name="Sex" class="custom-control-input" asp-for="Sex" value="2">
+                    <label class="custom-control-label" for="Sex2">女</label>
+                </div>
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        </div>
+    </div>
+</div>
