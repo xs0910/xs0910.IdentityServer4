@@ -42,6 +42,34 @@ namespace IdentityServerHost.Quickstart.UI
 
 
         /// <summary>
+        /// 获取ModelState 错误信息
+        /// </summary>
+        /// <returns></returns>
+        public string GetModelStateErrors()
+        {
+            string result = string.Empty;
+
+            if (!ModelState.IsValid)
+            {
+                List<string> sb = new List<string>();
+                var Keys = ModelState.Keys.ToList();
+                foreach (var key in Keys)
+                {
+                    var errors = ModelState[key].Errors.ToList();
+                    foreach (var error in errors)
+                    {
+                        sb.Add(error.ErrorMessage);
+                    }
+                }
+
+                result = string.Join(",", sb);
+            }
+
+            return result;
+        }
+
+
+        /// <summary>
         /// 跳转链接
         /// </summary>
         /// <param name="returnUrl"></param>

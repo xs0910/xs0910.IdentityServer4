@@ -34,7 +34,7 @@ namespace xs0910.IdentityServer4.Models
         /// <summary>
         /// 创建ID
         /// </summary>
-        public int? CreateId { get; set; }
+        public string CreateId { get; set; }
         /// <summary>
         /// 创建者
         /// </summary>
@@ -47,7 +47,7 @@ namespace xs0910.IdentityServer4.Models
         /// <summary>
         /// 修改ID
         /// </summary>
-        public int? ModifyId { get; set; }
+        public string ModifyId { get; set; }
         /// <summary>
         /// 修改者
         /// </summary>
