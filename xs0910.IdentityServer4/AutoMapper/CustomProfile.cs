@@ -25,6 +25,8 @@ namespace xs0910.IdentityServer4.AutoMapper
                 .ForMember(dest => dest.Claims, opt => opt.Ignore());
 
             CreateMap<RegisterRoleViewModel, ApplicationRole>();
+
+            CreateMap<ApplicationRole, EditRoleViewModel>();
         }
     }
 }

@@ -127,5 +127,64 @@ namespace IdentityServerHost.Quickstart.UI
         }
         #endregion
 
+        #region Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<EditRoleViewModel>(role);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditRoleViewModel model, string id, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            IdentityResult result = new IdentityResult();
+
+            if (ModelState.IsValid)
+            {
+                var roleItem = _roleManager.FindByIdAsync(model.Id).Result;
+                if (roleItem! != null)
+                {
+                    roleItem.Name = roleItem.System ? roleItem.Name : model.Name;
+                    roleItem.Description = model.Description;
+                    roleItem.OrderSort = model.OrderSort;
+                    roleItem.Enabled = model.Enabled;
+                    roleItem.ModifyId = HttpContext.User?.GetSubjectId();
+                    roleItem.ModifyBy = HttpContext.User?.GetDisplayName();
+                    roleItem.ModifyTime = DateTime.Now;
+
+                    result = await _roleManager.UpdateAsync(roleItem);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
+                }
+                else
+                {
+                    AddErrors($"{model?.Name} 不存在");
+                }
+                AddErrors(result);
+            }
+
+            return View(model);
+        }
+
+        #endregion
+
     }
 }

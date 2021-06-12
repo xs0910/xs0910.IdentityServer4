@@ -247,7 +247,7 @@ namespace IdentityServerHost.Quickstart.UI
 
                     if (result.Succeeded)
                     {
-                        return Json(result);
+                        return Json("");
                     }
                 }
 
@@ -255,7 +255,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
             AddErrors(result);
 
-            return Json(result.Errors);
+            return Json(GetModelStateErrors());
         }
         #endregion
     }

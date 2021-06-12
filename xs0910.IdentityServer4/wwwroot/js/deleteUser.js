@@ -8,9 +8,14 @@ $('.viewUser').on("click", function () {
 $('#delUser').on("click", function () {
     console.log('删除按钮触发事件');
     if (userId) {
-        $.post('/UserInfo/Delete/' + userId, null, function () {
-            history.go(0);
-            ShowSuccess("删除成功");
+        $.post('/UserInfo/Delete/' + userId, null, function (data) {
+            if (data.length > 0) {
+                console.log(data);
+                ShowFailure(data);
+            }
+            else {
+                history.go(0);
+            }
         })
             .fail(function () {
                 $('DeleteUser').modal('hide');

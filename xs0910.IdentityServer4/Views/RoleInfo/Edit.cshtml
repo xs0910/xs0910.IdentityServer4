@@ -1,0 +1,52 @@
+﻿@model EditRoleViewModel
+
+@{
+    ViewData["Title"] = "Edit Role";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <ul class="breadcrumb col-md-12">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/RoleInfo/index">角色列表</a></li>
+            <li class="breadcrumb-item active">编辑角色</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" readonly="@Model.System" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="OrderSort"></label>
+                    <input asp-for="OrderSort" class="form-control" />
+                    <span asp-validation-for="OrderSort" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" asp-for="Enabled" class="form-check-input" />
+                    <label asp-for="Enabled"></label>
+                    <span asp-validation-for="Enabled" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
