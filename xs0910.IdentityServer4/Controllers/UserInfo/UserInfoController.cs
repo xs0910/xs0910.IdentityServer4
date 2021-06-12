@@ -11,9 +11,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using xs0910.IdentityServer4;
 using xs0910.IdentityServer4.Models;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -27,14 +29,17 @@ namespace IdentityServerHost.Quickstart.UI
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
         public UserInfoController(UserManager<ApplicationUser> userManager,
                                   RoleManager<ApplicationRole> roleManager,
+                                  ApplicationDbContext context,
                                   IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
             _mapper = mapper;
         }
 
@@ -257,6 +262,73 @@ namespace IdentityServerHost.Quickstart.UI
 
             return Json(GetModelStateErrors());
         }
+        #endregion
+
+        #region Distribute
+        [HttpGet]
+        public IActionResult Distribute(string id)
+        {
+            var userItem = _userManager.FindByIdAsync(id).Result;
+            ViewData["UserName"] = userItem.UserName;
+            ViewData["UserId"] = id;
+            var roleIds = _context.UserRoles.Where(r => r.UserId == id).Select(r => r.RoleId).ToList();
+
+            var roleLists = _roleManager.Roles
+                .Where(r => !r.IsDeleted)
+                .OrderBy(r => r.OrderSort)
+                .Select(r => new DistributeRoleViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    Description = r.Description,
+                    Enabled = r.Enabled,
+                    Checked = false
+                }).ToList();
+
+            roleLists.ForEach(item =>
+            {
+                item.Checked = roleIds.Contains(item.Id);
+            });
+
+            return View(roleLists);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Distribute(string strLists, string id)
+        {
+            if (string.IsNullOrEmpty(strLists))
+            {
+                return Json("数据传输错误");
+            }
+
+            var lists = strLists.Split(",").ToList();
+            var userItem = await _userManager.FindByIdAsync(id);
+
+            List<Claim> addClaims = new List<Claim>();
+            List<Claim> removeClaims = new List<Claim>();
+
+            var entites = _context.UserRoles.Where(r => r.UserId == id).ToList();
+            if (entites.Any())
+            {
+                _context.UserRoles.RemoveRange(entites);
+                _context.SaveChanges();
+                entites.ForEach(r => removeClaims.Add(new Claim(JwtClaimTypes.Role, r.RoleId)));
+                await _userManager.RemoveClaimsAsync(userItem, removeClaims);
+            }
+
+            foreach (var item in lists)
+            {
+                var userRole = new ApplicationUserRole() { UserId = id, RoleId = item };
+                _context.UserRoles.Add(userRole);
+                addClaims.Add(new Claim(JwtClaimTypes.Role, item));
+            }
+            _context.SaveChanges();
+
+            await _userManager.AddClaimsAsync(userItem, addClaims);
+
+            return Json("修改成功");
+        }
+
         #endregion
     }
 }

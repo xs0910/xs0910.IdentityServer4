@@ -34,7 +34,7 @@
                     <th scope="col">Sex</th>
                     <th scope="col">Birth</th>
                     <th scope="col">Address</th>
-                    <th scope="col" width="150px">Operate</th>
+                    <th scope="col" width="250px">Operate</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +53,9 @@
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" asp-route-returnUrl="/userinfo/index" title="Edit" class="btn btn-warning btn-sm">
                                 Edit
+                            </a>
+                            <a asp-action="Distribute" asp-route-id="@item.Id" asp-route-returnUrl="/userinfo/index" title="Distribute" class="btn btn-info btn-sm">
+                                Distribute
                             </a>
                             <button type="button" class="btn btn-danger btn-sm viewUser" title="Delete"
                                     data-id="@item.Id" data-toggle="modal" data-target="#DeleteUser">
