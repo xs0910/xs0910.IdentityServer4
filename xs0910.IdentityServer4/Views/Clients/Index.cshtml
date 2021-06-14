@@ -1,0 +1,71 @@
+﻿@model List<IdentityServer4.EntityFramework.Entities.Client>
+@using IdentityServer4.EntityFramework.Mappers;
+
+@{
+    ViewData["Title"] = "Clients";
+    int index = 0;
+}
+
+
+<link rel="stylesheet" href="~/css/tip.css" />
+
+
+<div class="container-fluid">
+    <div class="row">
+        <ul class="breadcrumb col-md-12">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active">客户端列表</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mr-auto">
+                <a class="btn btn-primary" asp-action="CreateOrEdit" asp-route-returnUrl="/Clients/Index">Register Client</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Index</th>
+                    <th scope="col">客户端Id</th>
+                    <th scope="col">客户端名</th>
+                    <th scope="col">授权类型</th>
+                    <th scope="col">作用域</th>
+                    <th scope="col">允许跨域</th>
+                    <th scope="col">回调地址</th>
+                    <th scope="col">退出回调</th>
+                    <th scope="col" width="150px">Operate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var client = item.ToModel();
+                    <tr>
+                        <th scope="row">@(index + 1)</th>
+                        <td>@Html.DisplayFor(modelItem => item.ClientId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ClientName)</td>
+                        <td>@Html.Raw(string.Join("<br>", client.AllowedGrantTypes))</td>
+                        <td>@Html.Raw(string.Join("<br>", client.AllowedScopes))</td>
+                        <td>@Html.Raw(string.Join("<hr>", client.AllowedCorsOrigins))</td>
+                        <td>@Html.Raw(string.Join("<hr>", client.RedirectUris))</td>
+                        <td>@Html.Raw(string.Join("<hr>", client.PostLogoutRedirectUris))</td>
+                        <td>
+                            <a asp-action="CreateOrEdit" asp-route-id="@item.Id" asp-route-returnUrl="/Clients/Index" title="Edit" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                            <button type="button" class="btn btn-danger btn-sm viewUser" title="Delete"
+                                    data-id="@item.Id" data-toggle="modal" data-target="#DeleteUser">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    index++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
