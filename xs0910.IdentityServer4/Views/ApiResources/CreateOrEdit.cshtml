@@ -1,0 +1,55 @@
+﻿@model CreateOrEditApiViewModel;
+
+@{
+    ViewData["Title"] = "Create API Resource";
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <ul class="breadcrumb col-md-12">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/APIResources/Index">API Resources列表</a></li>
+            <li class="breadcrumb-item active">编辑API Resources</li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <h2>@ViewData["Title"]</h2>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <partial name="_ValidationSummary" />
+            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" asp-action="CreateOrEdit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="DisplayName"></label>
+                    <input asp-for="DisplayName" class="form-control" />
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="UserClaims"></label>
+                    <input asp-for="UserClaims" class="form-control" />
+                    <span asp-validation-for="UserClaims" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+
+        </div>
+    </div>
+</div>

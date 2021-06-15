@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using xs0910.IdentityServer4.ViewModels;
 using Secret = IdentityServer4.Models.Secret;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -98,7 +99,7 @@ namespace IdentityServerHost.Quickstart.UI
                     AllowedCorsOrigins = model?.AllowedCorsOrigins?.Split(","),
                     AllowedGrantTypes = model?.AllowedGrantTypes?.Split(","),
                     AllowedScopes = model?.AllowedScopes?.Split(","),
-                    PostLogoutRedirectUris = model?.PostLogoutRedirectUris.Split(","),
+                    PostLogoutRedirectUris = model?.PostLogoutRedirectUris?.Split(","),
                     RedirectUris = model?.RedirectUris?.Split(",")
                 };
 
@@ -212,6 +213,36 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return RedirectToLocal(returnUrl);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<MessageResult> Delete(int id)
+        {
+            if (id > 0)
+            {
+                var model = (await _context.Clients
+                    .Include(r => r.AllowedGrantTypes)
+                    .Include(r => r.AllowedScopes)
+                    .Include(r => r.AllowedCorsOrigins)
+                    .Include(r => r.ClientSecrets)
+                    .Include(r => r.RedirectUris)
+                    .Include(r => r.PostLogoutRedirectUris)
+                    .ToListAsync())
+                    .FirstOrDefault(r => r.Id == id);
+                if (model != null)
+                {
+                    _context.Clients.Remove(model);
+                    await _context.SaveChangesAsync();
+
+                    return new MessageResult();
+                }
+            }
+            return new MessageResult(201, false, "数据不存在，无法删除");
         }
     }
 }
