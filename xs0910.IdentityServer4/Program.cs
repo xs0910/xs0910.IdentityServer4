@@ -7,6 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using xs0910.IdentityServer4.Data;
+using Serilog;
+using Serilog.AspNetCore;
+using Serilog.Sinks.SystemConsole.Themes;
+using Serilog.Events;
 
 namespace xs0910.IdentityServer4
 {
@@ -14,6 +18,19 @@ namespace xs0910.IdentityServer4
     {
         public static void Main(string[] args)
         {
+            Console.Title = "IdentityServer4 认证中心";
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .MinimumLevel.Override("System", LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.File(@"Logs/IdentityServer4_log.txt")
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
+                .CreateLogger();
+
+
             var seed = args.Contains("/seed");
             if (seed)
             {
@@ -35,6 +52,14 @@ namespace xs0910.IdentityServer4
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.ClearProviders();
+                    builder.SetMinimumLevel(LogLevel.Information);
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
                 });
     }
 }
