@@ -21,7 +21,7 @@ namespace xs0910.IdentityServer4
             Console.Title = "IdentityServer4 认证中心";
 
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
+                .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .MinimumLevel.Override("System", LogEventLevel.Information)
                 .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
@@ -30,21 +30,32 @@ namespace xs0910.IdentityServer4
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
                 .CreateLogger();
 
-
-            var seed = args.Contains("/seed");
-            if (seed)
+            try
             {
-                args = args.Except(new[] { "/seed" }).ToArray();
+                Log.Information("Starting IdentityServer4");
+                var seed = args.Contains("/seed");
+                if (seed)
+                {
+                    args = args.Except(new[] { "/seed" }).ToArray();
+                }
+
+                var host = CreateHostBuilder(args).Build();
+
+                if (seed)
+                {
+                    SeedData.EnsureSeedData(host.Services);
+                }
+
+                host.Run();
             }
-
-            var host = CreateHostBuilder(args).Build();
-
-            if (seed)
+            catch (Exception ex)
             {
-                SeedData.EnsureSeedData(host.Services);
+                Log.Fatal(ex, "IdentityServer4 Terminated UnExpectedly");
             }
-
-            host.Run();
+            finally
+            {
+                Log.CloseAndFlush();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -60,6 +71,7 @@ namespace xs0910.IdentityServer4
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
                     builder.AddConsole();
                     builder.AddDebug();
-                });
+                })
+                .UseSerilog(dispose: true);
     }
 }
