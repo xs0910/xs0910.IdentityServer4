@@ -48,9 +48,13 @@
                         <td>@Html.DisplayFor(modelItem => item.Description)</td>
                         <td>@Html.Raw(string.Join(",", client.UserClaims))</td>
                         <td>
-                            <a asp-action="CreateOrEdit" asp-route-id="@item.Id" asp-route-returnUrl="/Clients/Index" title="Edit" class="btn btn-warning btn-sm">
+                            <a asp-action="CreateOrEdit" asp-route-id="@item.Id" asp-route-returnUrl="/ApiResources/Index" title="Edit" class="btn btn-warning btn-sm">
                                 Edit
                             </a>
+                            <button type="button" class="btn btn-danger btn-sm viewAPIResource" title="Delete"
+                                    data-id="@item.Id" data-toggle="modal" data-target="#DeleteAPI">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                     index++;
@@ -59,3 +63,26 @@
         </table>
     </div>
 </div>
+
+
+<div class="modal fade" id="DeleteAPI" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">警告</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">确定要删除当前这条记录吗</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default border" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="delAPI">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/deleteAPIResource.js"></script>
+}

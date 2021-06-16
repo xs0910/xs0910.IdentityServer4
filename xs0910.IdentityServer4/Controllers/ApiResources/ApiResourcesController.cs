@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using xs0910.IdentityServer4.ViewModels;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -36,7 +37,8 @@ namespace IdentityServerHost.Quickstart.UI
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<IActionResult> CreateOrEdit(int id, string returnUrl = null)
+        [HttpGet]
+        public async Task<IActionResult> CreateOrEdit(int id = 0, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (id > 0)
@@ -63,6 +65,7 @@ namespace IdentityServerHost.Quickstart.UI
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> CreateOrEdit(CreateOrEditApiViewModel model, string returnUrl = null)
         {
             // 新增
@@ -112,7 +115,32 @@ namespace IdentityServerHost.Quickstart.UI
                 await _context.SaveChangesAsync();
             }
 
-            return Ok();
+            return RedirectToLocal(returnUrl);
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<MessageResult> Delete(int id)
+        {
+            if (id > 0)
+            {
+                var model = (await _context.ApiResources
+                    .Include(r => r.UserClaims)
+                    .ToListAsync())
+                    .FirstOrDefault(r => r.Id == id);
+                if (model != null)
+                {
+                    _context.ApiResources.Remove(model);
+                    await _context.SaveChangesAsync();
+
+                    return new MessageResult();
+                }
+            }
+            return new MessageResult(201, false, "数据不存在，无法删除");
         }
     }
 }
