@@ -10,12 +10,12 @@ $('#delClient').on("click", function () {
     if (Id) {
         $.post('/Clients/Delete/' + Id, null, function (data) {
             console.log(data);
-            if (data !== null && data.Success) {
-                ShowSuccess(data.Msg);
-                // history.go(0);
+            if (data !== null && data.success === true) {
+                ShowSuccess(data.msg);
+                setTimeout(function () { history.go(0); }, 2000);
             }
             else {
-                ShowFailure(data.Msg);
+                ShowFailure(data.msg);
             }
         })
             .fail(function () {
