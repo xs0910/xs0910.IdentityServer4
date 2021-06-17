@@ -18,7 +18,12 @@
 
     $.post('/UserInfo/Distribute', postData, function (data) {
         console.log(data);
-        ShowSuccess(data);
+        if (data !== null && data.success === true) {
+            ShowSuccess(data.msg);
+        }
+        else {
+            ShowFailure(data.msg);
+        }
     })
         .fail(function () {
             ShowFailure("删除失败，无权限！");

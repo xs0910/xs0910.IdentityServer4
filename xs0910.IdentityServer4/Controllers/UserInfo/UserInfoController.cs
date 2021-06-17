@@ -17,6 +17,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using xs0910.IdentityServer4;
 using xs0910.IdentityServer4.Models;
+using xs0910.IdentityServer4.ViewModels;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -236,7 +237,7 @@ namespace IdentityServerHost.Quickstart.UI
         #endregion
 
         #region Delete
-        public async Task<JsonResult> Delete(string id)
+        public async Task<MessageResult> Delete(string id)
         {
             IdentityResult result = new IdentityResult();
 
@@ -252,7 +253,7 @@ namespace IdentityServerHost.Quickstart.UI
 
                     if (result.Succeeded)
                     {
-                        return Json("");
+                        return new MessageResult();
                     }
                 }
 
@@ -260,7 +261,7 @@ namespace IdentityServerHost.Quickstart.UI
             }
             AddErrors(result);
 
-            return Json(GetModelStateErrors());
+            return MessageResult.Failure(GetModelStateErrors());
         }
         #endregion
 
@@ -294,11 +295,11 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPost]
-        public async Task<JsonResult> Distribute(string strLists, string id)
+        public async Task<MessageResult> Distribute(string strLists, string id)
         {
             if (string.IsNullOrEmpty(strLists))
             {
-                return Json("数据传输错误");
+                return MessageResult.Failure("数据传输错误");
             }
 
             var lists = strLists.Split(",").ToList();
@@ -326,7 +327,7 @@ namespace IdentityServerHost.Quickstart.UI
 
             await _userManager.AddClaimsAsync(userItem, addClaims);
 
-            return Json("修改成功");
+            return new MessageResult(msg: "修改成功");
         }
 
         #endregion

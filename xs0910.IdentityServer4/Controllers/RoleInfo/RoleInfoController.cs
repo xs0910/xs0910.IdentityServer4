@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using xs0910.IdentityServer4.Models;
+using xs0910.IdentityServer4.ViewModels;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -89,7 +90,7 @@ namespace IdentityServerHost.Quickstart.UI
         #region Delete
         [HttpPost]
         [Authorize]
-        public async Task<JsonResult> Delete(string id)
+        public async Task<MessageResult> Delete(string id)
         {
             IdentityResult result = new IdentityResult();
             if (ModelState.IsValid)
@@ -112,7 +113,7 @@ namespace IdentityServerHost.Quickstart.UI
                         result = await _roleManager.UpdateAsync(roleItem);
                         if (result.Succeeded)
                         {
-                            return Json("");
+                            return new MessageResult();
                         }
                     }
                 }
@@ -123,7 +124,7 @@ namespace IdentityServerHost.Quickstart.UI
 
                 AddErrors(result);
             }
-            return Json(GetModelStateErrors());
+            return MessageResult.Failure(GetModelStateErrors());
         }
         #endregion
 

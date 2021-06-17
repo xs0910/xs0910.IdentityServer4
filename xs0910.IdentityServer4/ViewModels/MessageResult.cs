@@ -31,6 +31,11 @@ namespace xs0910.IdentityServer4.ViewModels
         /// 返回消息
         /// </summary>
         public string Msg { get; set; }
+
+        public static MessageResult Failure(string msg)
+        {
+            return new MessageResult(201, false, msg);
+        }
     }
 
     /// <summary>

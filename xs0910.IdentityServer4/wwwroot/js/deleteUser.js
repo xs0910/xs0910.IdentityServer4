@@ -9,12 +9,13 @@ $('#delUser').on("click", function () {
     console.log('删除按钮触发事件');
     if (userId) {
         $.post('/UserInfo/Delete/' + userId, null, function (data) {
-            if (data.length > 0) {
-                console.log(data);
-                ShowFailure(data);
+            console.log(data);
+            if (data !== null && data.success === true) {
+                ShowSuccess(data.msg);
+                setTimeout(function () { history.go(0) }, 2000);
             }
             else {
-                history.go(0);
+                ShowFailure(data.msg);
             }
         })
             .fail(function () {
