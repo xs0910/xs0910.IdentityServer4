@@ -43,6 +43,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         #region Register
         [HttpGet]
+        [Authorize("Admin")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -51,6 +52,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("Admin")]
         public async Task<IActionResult> Register(RegisterRoleViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -89,7 +91,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         #region Delete
         [HttpPost]
-        [Authorize]
+        [Authorize("SuperAdmin")]
         public async Task<MessageResult> Delete(string id)
         {
             IdentityResult result = new IdentityResult();
@@ -130,6 +132,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         #region Edit
         [HttpGet]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> Edit(string id, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -151,6 +154,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> Edit(EditRoleViewModel model, string id, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;

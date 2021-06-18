@@ -18,6 +18,7 @@ namespace IdentityServerHost.Quickstart.UI
     /// 客户端
     /// </summary>
     [Authorize]
+    [SecurityHeaders]
     public class ClientsController : BaseController
     {
         private readonly ConfigurationDbContext _context;
@@ -41,6 +42,7 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpGet]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> CreateOrEdit(int id = 0, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -86,6 +88,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> CreateOrEdit(CreateOrEditViewModel model, string returnUrl = null)
         {
             // 新增
@@ -221,6 +224,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<MessageResult> Delete(int id)
         {
             if (id > 0)

@@ -69,6 +69,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="returnUrl"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize("Admin")]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -83,6 +84,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="roleName"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize("Admin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null, string roleName = "Normal")
         {
@@ -137,6 +139,7 @@ namespace IdentityServerHost.Quickstart.UI
         #region Edit
 
         [HttpGet]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> Edit(string id, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -161,6 +164,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("SuperAdmin")]
         [Route("userinfo/edit/{id}")]
         public async Task<IActionResult> Edit(EditViewModel model, string id, string returnUrl)
         {
@@ -237,6 +241,8 @@ namespace IdentityServerHost.Quickstart.UI
         #endregion
 
         #region Delete
+        [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<MessageResult> Delete(string id)
         {
             IdentityResult result = new IdentityResult();
@@ -267,6 +273,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         #region Distribute
         [HttpGet]
+        [Authorize("SuperAdmin")]
         public IActionResult Distribute(string id)
         {
             var userItem = _userManager.FindByIdAsync(id).Result;
@@ -295,6 +302,7 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<MessageResult> Distribute(string strLists, string id)
         {
             if (string.IsNullOrEmpty(strLists))

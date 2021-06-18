@@ -1,6 +1,7 @@
 ﻿using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,6 +12,8 @@ using xs0910.IdentityServer4.ViewModels;
 
 namespace IdentityServerHost.Quickstart.UI
 {
+    [Authorize]
+    [SecurityHeaders]
     public class ApiResourcesController : BaseController
     {
         private readonly ConfigurationDbContext _context;
@@ -38,6 +41,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> CreateOrEdit(int id = 0, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -66,6 +70,7 @@ namespace IdentityServerHost.Quickstart.UI
         }
 
         [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<IActionResult> CreateOrEdit(CreateOrEditApiViewModel model, string returnUrl = null)
         {
             // 新增
@@ -124,6 +129,7 @@ namespace IdentityServerHost.Quickstart.UI
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize("SuperAdmin")]
         public async Task<MessageResult> Delete(int id)
         {
             if (id > 0)

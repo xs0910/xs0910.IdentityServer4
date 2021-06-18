@@ -1,4 +1,5 @@
 using IdentityServer4.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using System.Reflection;
+using xs0910.IdentityServer4.Authorization;
 using xs0910.IdentityServer4.Models;
 
 namespace xs0910.IdentityServer4
@@ -156,7 +158,21 @@ namespace xs0910.IdentityServer4
             builder.AddDeveloperSigningCredential();
 
             services.AddAuthentication();       // 认证
-            services.AddAuthorization();        // 授权
+
+            // 授权 添加授权策略
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SuperAdmin", policy =>
+                {
+                    policy.Requirements.Add(new ClaimRequirement("role", "SuperAdmin"));
+                });
+
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.Requirements.Add(new ClaimRequirement("role", "SuperAdmin,SystemAdmin"));
+                });
+            });
+            services.AddSingleton<IAuthorizationHandler, ClaimRequirementHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
